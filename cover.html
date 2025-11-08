@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOCALOID·UTAU COVER - Search Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Arial", sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #4285f4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        #search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 16px;
+            outline: none;
+        }
+        #search-input:focus {
+            box-shadow: 0 2px 12px rgba(66, 133, 244, 0.3);
+        }
+        .video-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .video-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .video-item:hover {
+            transform: translateY(-3px);
+        }
+        .video-title {
+            color: #222;
+            font-size: 16px;
+        }
+        .jump-btn {
+            padding: 6px 15px;
+            background-color: #fb7299;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .no-result {
+            text-align: center;
+            color: #666;
+            padding: 50px 0;
+            font-size: 16px;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .video-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .jump-btn {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">← 返回主页面</a>
+        <h1>VOCALOID·UTAU COVER 合集</h1>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="搜索视频标题（精准匹配，忽略半全角）...">
+        </div>
+    </div>
+
+    <div class="video-list">
+        <!-- 视频1：纯文字列表 -->
+        <div class="video-item" data-title="花弁、それにまつわる音声 / 津時テオ Utau Cover">
+            <h3 class="video-title">花弁、それにまつわる音声 / 津時テオ Utau Cover</h3>
+            <a href="https://www.bilibili.com/video/BV1PQR9YgEfW/" target="_blank" class="jump-btn">前往B站播放</a>
+        </div>
+
+        <!-- 新增视频复制上面的.video-item块即可 -->
+    </div>
+
+    <div class="no-result">未找到匹配的视频...</div>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const videoItems = document.querySelectorAll('.video-item');
+        const noResult = document.querySelector('.no-result');
+
+        function toHalfWidth(str) {
+            return str.replace(/[\uff01-\uff5e]/g, char => String.fromCharCode(char.charCodeAt(0) - 65248)).replace(/\u3000/g, ' ');
+        }
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = toHalfWidth(this.value.trim());
+            let hasMatch = false;
+            videoItems.forEach(item => {
+                const isMatch = toHalfWidth(item.dataset.title).includes(searchValue);
+                item.style.display = isMatch ? 'flex' : 'none';
+                if (isMatch) hasMatch = true;
+            });
+            noResult.style.display = hasMatch ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
